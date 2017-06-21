@@ -19,7 +19,7 @@
                                         <a class="level-item" href="{{ add_on.versions.first.file }}">
                                             <i class="fa fa-download"></i> {{ add_on.versions.first.version }}
                                         </a>
-                                        <em>({{ add_on.versions.first.added }})</em>
+                                        <em>({{ add_on.versions.first.added }}, for WoW version {{ add_on.versions.first.supports }}{% if add_on.versions.first.supports != current_wow_version %} <span class="icon is-small"><i class="fa fa-exclamation-triangle" title="Add-on may be outdated"></i></span>{% endif %})</em>
                                     </div>
                                 </nav>
                             </div>

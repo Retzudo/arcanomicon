@@ -119,3 +119,5 @@ STATIC_URL = '/static/'
 if DEBUG:
     MEDIA_ROOT = os.path.join(tempfile.gettempdir(), 'arcanomicon')
     MEDIA_URL = '/media/'
+
+CURRENT_WOW_VERSION = '7.2.5'
