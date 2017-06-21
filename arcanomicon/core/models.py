@@ -5,13 +5,16 @@ from django.db import models
 from django.utils.text import slugify
 
 wow_version = [
-    ('7.2.5', '7.2.5')
+    ('7.2.5', '7.2.5'),
+    ('7.2.0', '7.2.0'),
+    ('7.1.5', '7.1.5'),
+    ('7.1.0', '7.1.0'),
 ]
 
 
 def upload_to(instance, filename):
     _, ext = os.path.splitext(filename)
-    new_filename = '{name}-{version}.{ext}'.format(
+    new_filename = '{name}-{version}{ext}'.format(
         name=slugify(instance.add_on.name),
         version=instance.version,
         ext=ext,
@@ -78,3 +81,4 @@ class AddOnVersion(models.Model):
 
     class Meta:
         verbose_name = 'Add-on version'
+        ordering = ('-added',)

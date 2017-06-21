@@ -1,0 +1,32 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            {% for add_on in add_ons %}
+                <div class="box">
+                    <div class="media">
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>{{ add_on.short_description }}</p>
+                                <nav class="level is-mobile">
+                                    <div class="level-left">
+                                        <a class="level-item" href="{{ add_on.versions.first.file }}">
+                                            <i class="fa fa-download"></i> {{ add_on.versions.first.version }}
+                                        </a>
+                                        <em>({{ add_on.versions.first.added }})</em>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
