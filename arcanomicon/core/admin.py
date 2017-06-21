@@ -7,11 +7,18 @@ class AddOnVersionInline(admin.StackedInline):
     extra = 0
 
 
+class AddOnPageTabular(admin.TabularInline):
+    model = models.AddOnPage
+
+
+class AddOnScreenshotTabular(admin.TabularInline):
+    model = models.Screenshot
+    extra = 1
+
+
 class AddOnAdmin(admin.ModelAdmin):
-    inlines = [AddOnVersionInline]
+    inlines = [AddOnVersionInline, AddOnPageTabular, AddOnScreenshotTabular]
 
 
 admin.site.register(models.User)
 admin.site.register(models.AddOn, AddOnAdmin)
-admin.site.register(models.AddOnPage)
-admin.site.register(models.Image)

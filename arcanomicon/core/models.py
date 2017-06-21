@@ -36,6 +36,7 @@ class AddOn(models.Model):
     name = models.CharField(max_length=255)
     short_description = models.CharField(max_length=255)
     contributors = models.ManyToManyField(User, related_name='contributes_to', blank=True)
+    logo = models.ImageField()
 
     def __str__(self):
         return self.name
@@ -46,7 +47,7 @@ class AddOn(models.Model):
 
 class AddOnPage(models.Model):
     """Model for a add-on page."""
-    add_on = models.OneToOneField(AddOn, on_delete=models.CASCADE)
+    add_on = models.OneToOneField(AddOn, on_delete=models.CASCADE, related_name='page')
     long_description = models.TextField()
 
     def __str__(self):
@@ -56,11 +57,10 @@ class AddOnPage(models.Model):
         verbose_name = 'Add-on page'
 
 
-class Image(models.Model):
+class Screenshot(models.Model):
     """Model for an image/screenshot of an add-on."""
     image = models.ImageField()
-    add_on_for_screenshots = models.ForeignKey(AddOn, related_name='screenshots')
-    add_on_for_description = models.ForeignKey(AddOn, related_name='description_images')
+    add_on = models.ForeignKey(AddOn, related_name='screenshots')
 
     def __str__(self):
         return str(self.image)
