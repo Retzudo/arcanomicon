@@ -4,7 +4,7 @@ from django.contrib.auth.models import User as DjangoUser
 from django.db import models
 from django.utils.text import slugify
 
-wow_version = [
+wow_versions = [
     ('7.2.5', '7.2.5'),
     ('7.2.0', '7.2.0'),
     ('7.1.5', '7.1.5'),
@@ -64,8 +64,8 @@ class AddOnPage(models.Model):
 
 class Screenshot(models.Model):
     """Model for an image/screenshot of an add-on."""
-    image = models.ImageField()
     add_on = models.ForeignKey(AddOn, related_name='screenshots')
+    image = models.ImageField()
 
     def __str__(self):
         return str(self.image)
@@ -75,7 +75,7 @@ class AddOnVersion(models.Model):
     """Version for an add-on."""
     add_on = models.ForeignKey(AddOn, related_name='versions')
     version = models.CharField(max_length=255)
-    supports = models.CharField(max_length=8, choices=wow_version)
+    supports = models.CharField(max_length=8, choices=wow_versions)
     file = models.FileField(upload_to=upload_to)
     added = models.DateTimeField(auto_now_add=True)
 
