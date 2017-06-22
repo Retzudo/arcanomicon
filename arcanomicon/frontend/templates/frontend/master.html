@@ -44,6 +44,8 @@
         </div>
     </nav>
     {% block body %}{% endblock %}
+    <script src="{% static 'frontend/js/jquery-3.2.1.min.js' %}"></script>
+    {% block javascript %}{% endblock %}
 </body>
 </html>
 {% endspaceless %}

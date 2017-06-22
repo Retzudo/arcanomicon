@@ -22,11 +22,19 @@
                                         <nav class="level is-mobile">
                                             <div class="level-left">
                                                 <div class="level-item">
-                                                    <a href="#" title="Add to library">
-                                                        <span class="icon is-small">
-                                                            <i class="fa fa-star-o"></i>
-                                                        </span>
-                                                    </a>
+                                                    {% if add_on in user.user.favourites.all %}
+                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}" class="remove-from-favourites">
+                                                            <span class="icon is-small">
+                                                                <i class="fa fa-star"></i>
+                                                            </span>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}" class="add-to-favourites">
+                                                            <span class="icon is-small">
+                                                                <i class="fa fa-star-o"></i>
+                                                            </span>
+                                                        </a>
+                                                    {% endif %}
                                                 </div>
                                                 <div class="level-item">
                                                     <a href="{{ latest_version.file }}">
