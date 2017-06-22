@@ -13,6 +13,7 @@ wow_version = [
 
 
 def upload_to(instance, filename):
+    """Construct the upload path for uploaded add-on ZIPs."""
     _, ext = os.path.splitext(filename)
     new_filename = '{name}-{version}{ext}'.format(
         name=slugify(instance.add_on.name),
@@ -26,6 +27,7 @@ def upload_to(instance, filename):
 class User(models.Model):
     """Extended User model."""
     user = models.OneToOneField(DjangoUser, on_delete=models.CASCADE)
+    favourites = models.ManyToManyField('AddOn', related_name='favourited_by')
 
     def __str__(self):
         return str(self.user)
@@ -70,6 +72,7 @@ class Screenshot(models.Model):
 
 
 class AddOnVersion(models.Model):
+    """Version for an add-on."""
     add_on = models.ForeignKey(AddOn, related_name='versions')
     version = models.CharField(max_length=255)
     supports = models.CharField(max_length=8, choices=wow_version)

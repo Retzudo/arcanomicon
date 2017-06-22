@@ -4,28 +4,35 @@
     <section class="section">
         <div class="container">
             {% for add_on in add_ons %}
-                <div class="box">
-                    <div class="media">
-                        <figure class="media-left">
-                            <p class="image is-64x64">
-                                <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>{{ add_on.short_description }}</p>
-                                <nav class="level is-mobile">
-                                    <div class="level-left">
-                                        <a class="level-item" href="{{ add_on.versions.first.file }}">
-                                            <i class="fa fa-download"></i> {{ add_on.versions.first.version }}
+                {% with add_on.versions.first as latest_version %}
+                    {% if latest_version %}
+                        <div class="box">
+                            <div class="media">
+                                <figure class="media-left">
+                                    <p class="image is-64x64">
+                                        <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}">
+                                            <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
                                         </a>
-                                        <em>({{ add_on.versions.first.added }}, for WoW version {{ add_on.versions.first.supports }}{% if add_on.versions.first.supports != current_wow_version %} <span class="icon is-small"><i class="fa fa-exclamation-triangle" title="Add-on may be outdated"></i></span>{% endif %})</em>
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}"><strong>{{ add_on.name }}</strong></a><br>
+                                        <p>{{ add_on.short_description }}</p>
+                                        <nav class="level is-mobile">
+                                            <div class="level-left">
+                                                <a class="level-item" href="{{ latest_version.file }}">
+                                                    <i class="fa fa-download"></i> {{ latest_version.version }}
+                                                </a>
+                                                <em>({{ latest_version.added }}, for WoW version {{ latest_version.supports }}{% if latest_version.supports != current_wow_version %} <span class="icon is-small"><i class="fa fa-exclamation-triangle" title="Add-on may be outdated"></i></span>{% endif %})</em>
+                                            </div>
+                                        </nav>
                                     </div>
-                                </nav>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endwith %}
             {% endfor %}
         </div>
     </section>
