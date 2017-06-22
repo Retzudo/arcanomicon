@@ -55,3 +55,28 @@
         </div>
     </section>
 {% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            'use strict';
+
+            var addUrl = '/add';
+            var removeUrl = '/remove';
+
+            $('.add-to-favourites').click(function (event) {
+                event.preventDefault();
+                $.post(addUrl, {
+                    addOnId: event.target.dataset.id
+                });
+            });
+
+            $('.remove-from-favourites').click(function (event) {
+                event.preventDefault();
+                $.post(removeUrl, {
+                    addOnId: event.target.dataset.id
+                });
+            });
+        });
+    </script>
+{% endblock %}
