@@ -121,3 +121,4 @@ if DEBUG:
     MEDIA_URL = '/media/'
 
 CURRENT_WOW_VERSION = '7.2.5'
+LOGIN_REDIRECT_URL = '/profile'

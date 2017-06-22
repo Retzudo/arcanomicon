@@ -21,10 +21,20 @@
                                         <p>{{ add_on.short_description }}</p>
                                         <nav class="level is-mobile">
                                             <div class="level-left">
-                                                <a class="level-item" href="{{ latest_version.file }}">
-                                                    <i class="fa fa-download"></i> {{ latest_version.version }}
-                                                </a>
-                                                <em>({{ latest_version.added }}, for WoW version {{ latest_version.supports }}{% if latest_version.supports != current_wow_version %} <span class="icon is-small"><i class="fa fa-exclamation-triangle" title="Add-on may be outdated"></i></span>{% endif %})</em>
+                                                <div class="level-item">
+                                                    <a href="#" title="Add to library">
+                                                        <span class="icon is-small">
+                                                            <i class="fa fa-star-o"></i>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="level-item">
+                                                    <a href="{{ latest_version.file }}">
+                                                        <span class="icon is-small">
+                                                            <i class="fa fa-download"></i>
+                                                        </span> {{ latest_version.version }}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </nav>
                                     </div>

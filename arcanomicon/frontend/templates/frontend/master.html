@@ -25,7 +25,23 @@
                 </p>
             </form>
         </div>
-        <div class="nav-right"></div>
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <div class="nav-item">
+                    <a href="/profile">{{ request.user.username }}</a>
+                </div>
+                <div class="nav-item">
+                    <a href="{% url 'logout' %}">Log out</a>
+                </div>
+            {% else %}
+                <div class="nav-item">
+                    <a href="{% url 'login' %}">Log in</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/register">Register</a>
+                </div>
+            {% endif %}
+        </div>
     </nav>
     {% block body %}{% endblock %}
 </body>
