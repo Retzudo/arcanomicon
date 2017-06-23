@@ -16,12 +16,30 @@
                 <tbody>
                     {% for favourite in request.user.user.favourites.all %}
                         <tr>
-                            {% with favourite.versions.first as latest_version %}
-                                <td>{{ favourite.name }}</td>
-                                <td>{{ latest_version.version }}</td>
-                                <td>{{ latest_version.supports }}</td>
-                                <td><a href="{{ latest_version.file.url }}" target="_blank"><i class="fa fa-download"></i></a></td>
-                            {% endwith %}
+                            <td>
+                                {{ favourite.name }}
+                            </td>
+                            <td>
+                                {% if favourite.latest_version %}
+                                    {{ favourite.latest_version.version }}
+                                {% else %}
+                                    <em>No version</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if favourite.latest_version %}
+                                    {{ favourite.latest_version.supports }}
+                                {% else %}
+                                    <em>No version</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if favourite.latest_version %}
+                                    <a href="{{ favourite.latest_version.file.url }}" target="_blank"><i class="fa fa-download"></i></a>
+                                {% else %}
+                                    <em>No version</em>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

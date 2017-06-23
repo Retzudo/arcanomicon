@@ -43,6 +43,10 @@ class AddOn(models.Model):
     contributors = models.ManyToManyField(User, related_name='contributes_to', blank=True)
     logo = models.ImageField()
 
+    @property
+    def latest_version(self):
+        return self.versions.first()
+
     def __str__(self):
         return self.name
 

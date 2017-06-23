@@ -4,55 +4,53 @@
     <section class="section">
         <div class="container">
             {% for add_on in add_ons %}
-                {% with add_on.versions.first as latest_version %}
-                    {% if latest_version %}
-                        <div class="box add-on">
-                            <div class="media">
-                                <figure class="media-left">
-                                    <p class="image is-64x64">
-                                        <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}">
-                                            <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
-                                        </a>
-                                    </p>
-                                </figure>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}"><strong>{{ add_on.name }}</strong></a><br>
-                                        <p>{{ add_on.short_description }}</p>
-                                        <nav class="level is-mobile">
-                                            <div class="level-left">
-                                                <div class="level-item">
-                                                    {% if add_on in user.user.favourites.all %}
-                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}"
-                                                           class="remove-from-favourites">
-                                                            <span class="icon is-small">
-                                                                <i class="fa fa-star"></i>
-                                                            </span>
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}"
-                                                           class="add-to-favourites">
-                                                            <span class="icon is-small">
-                                                                <i class="fa fa-star-o"></i>
-                                                            </span>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="level-item">
-                                                    <a href="{{ latest_version.file }}" target="_blank">
+                {% if add_on.latest_version %}
+                    <div class="box add-on">
+                        <div class="media">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}">
+                                        <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
+                                    </a>
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}"><strong>{{ add_on.name }}</strong></a><br>
+                                    <p>{{ add_on.short_description }}</p>
+                                    <nav class="level is-mobile">
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                {% if add_on in user.user.favourites.all %}
+                                                    <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                                       class="remove-from-favourites">
                                                         <span class="icon is-small">
-                                                            <i class="fa fa-download"></i>
-                                                        </span> {{ latest_version.version }}
+                                                            <i class="fa fa-star"></i>
+                                                        </span>
                                                     </a>
-                                                </div>
+                                                {% else %}
+                                                    <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                                       class="add-to-favourites">
+                                                        <span class="icon is-small">
+                                                            <i class="fa fa-star-o"></i>
+                                                        </span>
+                                                    </a>
+                                                {% endif %}
                                             </div>
-                                        </nav>
-                                    </div>
+                                            <div class="level-item">
+                                                <a href="{{ add_on.latest_version.file }}" target="_blank">
+                                                    <span class="icon is-small">
+                                                        <i class="fa fa-download"></i>
+                                                    </span> {{ add_on.latest_version.version }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                    {% endif %}
-                {% endwith %}
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </section>
