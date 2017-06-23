@@ -6,7 +6,7 @@
             {% for add_on in add_ons %}
                 {% with add_on.versions.first as latest_version %}
                     {% if latest_version %}
-                        <div class="box">
+                        <div class="box add-on">
                             <div class="media">
                                 <figure class="media-left">
                                     <p class="image is-64x64">
@@ -23,13 +23,15 @@
                                             <div class="level-left">
                                                 <div class="level-item">
                                                     {% if add_on in user.user.favourites.all %}
-                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}" class="remove-from-favourites">
+                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                                           class="remove-from-favourites">
                                                             <span class="icon is-small">
                                                                 <i class="fa fa-star"></i>
                                                             </span>
                                                         </a>
                                                     {% else %}
-                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}" class="add-to-favourites">
+                                                        <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                                           class="add-to-favourites">
                                                             <span class="icon is-small">
                                                                 <i class="fa fa-star-o"></i>
                                                             </span>
@@ -61,20 +63,68 @@
         $(function () {
             'use strict';
 
-            var addUrl = '/add';
-            var removeUrl = '/remove';
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
 
-            $('.add-to-favourites').click(function (event) {
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+
+            var addUrl = '/api/favourites/';
+            var removeUrl = '/api/favourites/{addOnId}';
+
+            var $addOn = $('.add-on');
+
+            $addOn.on('click', '.add-to-favourites', function (event) {
                 event.preventDefault();
-                $.post(addUrl, {
-                    addOnId: event.target.dataset.id
+                var $this = $(this);
+                var addOnId = $this.data('id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: addUrl,
+                    data: {
+                        addOnId: addOnId
+                    }
+                }).done(function () {
+                    $this.find('i').removeClass('fa-star-o').addClass('fa-star');
+                    $this.removeClass('add-to-favourites').addClass('remove-from-favourites');
                 });
             });
 
-            $('.remove-from-favourites').click(function (event) {
+            $addOn.on('click', '.remove-from-favourites', function (event) {
                 event.preventDefault();
-                $.post(removeUrl, {
-                    addOnId: event.target.dataset.id
+                var $this = $(this);
+                var addOnId = $this.data('id');
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: removeUrl.replace(/\{addOnId\}/, addOnId)
+                }).done(function () {
+                    $this.find('i').removeClass('fa-star').addClass('fa-star-o');
+                    $this.removeClass('remove-from-favourites').addClass('add-to-favourites');
                 });
             });
         });
