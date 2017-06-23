@@ -16,7 +16,7 @@
             <a href="{% url 'index' %}" class="nav-item">Arcanomicon</a>
         </div>
         <div class="nav-center">
-            <form action="/search" method="get" class="nav-item">
+            <form action="{% url 'search' %}" method="get" class="nav-item">
                 <p class="control has-icons-right">
                     <input type="search" class="input" placeholder="Search" name="q">
                     <span class="icon is-small is-right">
@@ -28,7 +28,7 @@
         <div class="nav-right">
             {% if user.is_authenticated %}
                 <div class="nav-item">
-                    <a href="/profile">{{ request.user.username }}</a>
+                    <a href="{% url 'profile' %}">{{ request.user.username }}</a>
                 </div>
                 <div class="nav-item">
                     <a href="{% url 'logout' %}">Log out</a>

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
 from core.models import AddOn
@@ -8,7 +9,7 @@ def index(request):
 
     return render(request, 'frontend/index.html', context={
         'add_ons': recent_add_ons,
-        'current_wow_version': current_wow_version()
+        'current_wow_version': current_wow_version(),
     })
 
 
@@ -17,7 +18,21 @@ def details(request, slug, add_on_id):
 
     return render(request, 'frontend/details.html', context={
         'add_on': add_on,
-        'current_wow_version': current_wow_version()
+        'current_wow_version': current_wow_version(),
+    })
+
+
+def search(request):
+    query = request.GET.get('q')
+
+    if query:
+        add_ons = AddOn.objects.filter(Q(name__contains=query.lower()) | Q(short_description__contains=query.lower()))
+    else:
+        add_ons = AddOn.objects.all().order_by('-updated')[:10]
+
+    return render(request, 'frontend/index.html', context={
+        'add_ons': add_ons,
+        'current_wow_version': current_wow_version(),
     })
 
 

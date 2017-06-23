@@ -1,0 +1,31 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Favourites</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Version</th>
+                        <th>Supports</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for favourite in request.user.user.favourites.all %}
+                        <tr>
+                            {% with favourite.versions.first as latest_version %}
+                                <td>{{ favourite.name }}</td>
+                                <td>{{ latest_version.version }}</td>
+                                <td>{{ latest_version.supports }}</td>
+                                <td><a href="{{ latest_version.file.url }}" target="_blank"><i class="fa fa-download"></i></a></td>
+                            {% endwith %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}
