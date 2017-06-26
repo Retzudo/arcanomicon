@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'BlizzardIcons';
+    src: url('https://eu.battle.net/heroes/static/fonts/heroes-icons/heroes.eot');
+    src: url('https://eu.battle.net/heroes/static/fonts/heroes-icons/heroes.eot') format('embedded-opentype'),
+        url('https://eu.battle.net/heroes/static/fonts/heroes-icons/heroes.woff') format('woff'),
+        url('https://eu.battle.net/heroes/static/fonts/heroes-icons/heroes.ttf') format('truetype'),
+        url('https://eu.battle.net/heroes/static/fonts/heroes-icons/heroes.svg') format('svg');
+}
+
+.fa-wow:before {
+    font-family: 'BlizzardIcons';
+    content: '\e600';
+}

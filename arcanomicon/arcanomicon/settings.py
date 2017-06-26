@@ -29,7 +29,8 @@ if not SECRET_KEY:
 # Enable DEBUG if there's a debug env var
 DEBUG = True if os.getenv('ARCANOMICON_DEBUG') else False
 
-ALLOWED_HOSTS = ['.arcanomicon.com']
+if not DEBUG:
+    ALLOWED_HOSTS = ['.arcanomicon.com']
 
 # Application definition
 

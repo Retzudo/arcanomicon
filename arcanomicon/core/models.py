@@ -2,6 +2,7 @@ import os.path
 
 from django.contrib.auth.models import User as DjangoUser
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 wow_versions = [
@@ -46,6 +47,9 @@ class AddOn(models.Model):
     @property
     def latest_version(self):
         return self.versions.first()
+
+    def get_absolute_url(self):
+        return reverse('details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name
