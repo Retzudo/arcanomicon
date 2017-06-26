@@ -9,7 +9,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Version</th>
-                        <th>Supports</th>
+                        <th>Supports <span class="icon is-small"><i class="fa fa-wow"></i></span> </th>
                         <th>Download</th>
                     </tr>
                 </thead>
@@ -17,7 +17,7 @@
                     {% for favourite in request.user.user.favourites.all %}
                         <tr>
                             <td>
-                                {{ favourite.name }}
+                                <a href="{% url 'addon_details' slug=favourite.name|slugify pk=favourite.pk %}">{{ favourite.name }}</a>
                             </td>
                             <td>
                                 {% if favourite.latest_version %}
@@ -46,4 +46,52 @@
             </table>
         </div>
     </section>
+
+    {% if request.user.user.addons_created.all|length > 0 %}
+        <section class="section">
+            <div class="container">
+                <h1 class="title">Created</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Supports <span class="icon is-small"><i class="fa fa-wow"></i></span> </th>
+                            <th>Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for add_on in request.user.user.addons_created.all %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'addon_details' slug=add_on.name|slugify pk=add_on.pk %}">{{ add_on.name }}</a>
+                                </td>
+                                <td>
+                                    {% if add_on.latest_version %}
+                                        {{ add_on.latest_version.version }}
+                                    {% else %}
+                                        <em>No version</em>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if add_on.latest_version %}
+                                        {{ add_on.latest_version.supports }}
+                                    {% else %}
+                                        <em>No version</em>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if add_on.latest_version %}
+                                        <a href="{{ add_on.latest_version.file.url }}" target="_blank"><i class="fa fa-download"></i></a>
+                                    {% else %}
+                                        <em>No version</em>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% endif %}
 {% endblock %}

@@ -1,12 +1,12 @@
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
 from django.views import generic
 
-from core.models import AddOn
+from core.models import AddOn, AddOnPage
+from frontend.forms import AddOnForm
 
 
 class IndexView(generic.ListView):
-    template_name = 'frontend/index.html'
+    template_name = 'frontend/addon_list.html'
     queryset = AddOn.objects.all().order_by('-updated')[:10]
     context_object_name = 'add_ons'
 
@@ -17,7 +17,7 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
-    template_name = 'frontend/details.html'
+    template_name = 'frontend/addon_details.html'
     model = AddOn
     context_object_name = 'add_on'
 
@@ -28,7 +28,7 @@ class DetailView(generic.DetailView):
 
 
 class SearchView(generic.ListView):
-    template_name = 'frontend/index.html'
+    template_name = 'frontend/addon_list.html'
     context_object_name = 'add_ons'
 
     def get_queryset(self):
@@ -42,6 +42,17 @@ class SearchView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['current_wow_version'] = current_wow_version()
         return context
+
+
+class AddOnCreate(generic.CreateView):
+    model = AddOn
+    form_class = AddOnForm
+    template_name = 'frontend/addon_form.html'
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user.user
+        form.instance.page = AddOnPage(long_description=form.cleaned_data['long_description'])
+        return super(AddOnCreate, self).form_valid(form)
 
 
 def current_wow_version():

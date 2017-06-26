@@ -1,0 +1,106 @@
+{% extends 'frontend/master.html' %}
+{% load markdown_deux_tags %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <form action="{% url 'addon_create' %}" method="post" enctype="multipart/form-data">
+                {% if form.non_field_errors %}
+                <div class="notification is-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.name.id_for_label }}" class="label">{{ form.name.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input{% if form.name.errors %} is-danger{% endif %}" type="text" id="{{ form.name.auto_id }}" name="{{ form.name.html_name }}" required>
+                            </div>
+                            {% for error in form.name.errors %}
+                                <p class="help is-danger">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.logo.id_for_label }}" class="label">{{ form.logo.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input {% if form.logo.errors %}class="is-danger"{% endif %} type="file" accept="image/*" id="{{ form.logo.auto_id }}" name="{{ form.logo.html_name }}" required>
+                            </div>
+                            {% for error in form.logo.errors %}
+                                <p class="help is-danger">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.short_description.id_for_label }}" class="label">{{ form.short_description.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input{% if form.short_description.errors %} is-danger{% endif %}" type="text" id="{{ form.short_description.auto_id }}" name="{{ form.short_description.html_name }}" required>
+                            </div>
+                            {% for error in form.short_description.errors %}
+                                <p class="help is-danger">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.long_description.id_for_label }}" class="label">{{ form.long_description.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="help">{% autoescape off %}{% markdown_allowed %}{% endautoescape %}</p>
+                            <div class="control">
+                                <textarea class="textarea{% if form.long_description.errors %} is-danger{% endif %}"id="{{ form.long_description.auto_id }}" name="{{ form.long_description.html_name }}" required></textarea>
+                            </div>
+                            {% for error in form.long_description.errors %}
+                                <p class="help is-danger">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                    <!-- Left empty for spacing -->
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary">
+                                Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
+{% endblock %}

@@ -36,7 +36,7 @@ class User(models.Model):
 
 class AddOn(models.Model):
     """Add-on model."""
-    creator = models.ForeignKey(User, related_name='addons', on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name='addons_created', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255)
@@ -49,7 +49,7 @@ class AddOn(models.Model):
         return self.versions.first()
 
     def get_absolute_url(self):
-        return reverse('details', kwargs={'pk': self.pk})
+        return reverse('addon_details', kwargs={'pk': self.pk, 'slug': slugify(self.name)})
 
     def __str__(self):
         return self.name

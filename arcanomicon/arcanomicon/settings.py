@@ -138,5 +138,6 @@ if DEBUG:
     MEDIA_URL = '/media/'
 
 CURRENT_WOW_VERSION = '7.2.5'
+LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/profile'
 INTERNAL_IPS = ['127.0.0.1']
