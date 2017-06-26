@@ -1,39 +1,47 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.views import generic
 
 from core.models import AddOn
 
 
-def index(request):
-    recent_add_ons = AddOn.objects.all().order_by('-updated')[:10]
+class IndexView(generic.ListView):
+    template_name = 'frontend/index.html'
+    queryset = AddOn.objects.all().order_by('-updated')[:10]
+    context_object_name = 'add_ons'
 
-    return render(request, 'frontend/index.html', context={
-        'add_ons': recent_add_ons,
-        'current_wow_version': current_wow_version(),
-    })
-
-
-def details(request, slug, add_on_id):
-    add_on = get_object_or_404(AddOn, pk=add_on_id)
-
-    return render(request, 'frontend/details.html', context={
-        'add_on': add_on,
-        'current_wow_version': current_wow_version(),
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_wow_version'] = current_wow_version()
+        return context
 
 
-def search(request):
-    query = request.GET.get('q')
+class DetailView(generic.DetailView):
+    template_name = 'frontend/details.html'
+    model = AddOn
+    context_object_name = 'add_on'
 
-    if query:
-        add_ons = AddOn.objects.filter(Q(name__contains=query.lower()) | Q(short_description__contains=query.lower()))
-    else:
-        add_ons = AddOn.objects.all().order_by('-updated')[:10]
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_wow_version'] = current_wow_version()
+        return context
 
-    return render(request, 'frontend/index.html', context={
-        'add_ons': add_ons,
-        'current_wow_version': current_wow_version(),
-    })
+
+class SearchView(generic.ListView):
+    template_name = 'frontend/index.html'
+    context_object_name = 'add_ons'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query:
+            return AddOn.objects.none()
+
+        return AddOn.objects.filter(Q(name__contains=query.lower()) | Q(short_description__contains=query.lower()))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_wow_version'] = current_wow_version()
+        return context
 
 
 def current_wow_version():

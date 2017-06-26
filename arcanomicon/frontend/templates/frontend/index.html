@@ -9,14 +9,14 @@
                         <div class="media">
                             <figure class="media-left">
                                 <p class="image is-64x64">
-                                    <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}">
+                                    <a href="{% url 'details' slug=add_on.name|slugify pk=add_on.id %}">
                                         <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
                                     </a>
                                 </p>
                             </figure>
                             <div class="media-content">
                                 <div class="content">
-                                    <a href="{% url 'details' slug=add_on.name|slugify add_on_id=add_on.id %}"><strong>{{ add_on.name }}</strong></a><br>
+                                    <a href="{% url 'details' slug=add_on.name|slugify pk=add_on.id %}"><strong>{{ add_on.name }}</strong></a><br>
                                     <p>{{ add_on.short_description }}</p>
                                     <nav class="level is-mobile">
                                         <div class="level-left">
@@ -51,6 +51,8 @@
                         </div>
                     </div>
                 {% endif %}
+            {% empty %}
+                <em>No add-ons found</em>
             {% endfor %}
         </div>
     </section>
