@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import random
 import tempfile
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,12 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'w2=!w1&rw7yavo&8@+!ag+9o5!8bz5ouum7vm-(v!(lg90cm9f'
+SECRET_KEY = os.getenv('ARCANOMICON_SECRET_KEY')
+if not SECRET_KEY:
+    SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Enable DEBUG if there's a debug env var
+DEBUG = True if os.getenv('ARCANOMICON_DEBUG') else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.arcanomicon.com']
 
 # Application definition
 
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'markdown_deux',
     'core',
     'frontend',
+    'api',
 ]
 
 MIDDLEWARE = [
