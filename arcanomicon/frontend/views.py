@@ -1,8 +1,11 @@
 from django.db.models import Q
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View
 from django.views import generic
 
-from core.models import AddOn, AddOnPage
-from frontend.forms import AddOnForm
+from core.models import AddOn
+from frontend.forms import AddOnForm, AddOnPageForm
 
 
 class IndexView(generic.ListView):
@@ -44,15 +47,36 @@ class SearchView(generic.ListView):
         return context
 
 
-class AddOnCreate(generic.CreateView):
-    model = AddOn
-    form_class = AddOnForm
+class AddOnCreateView(View):
     template_name = 'frontend/addon_form.html'
 
-    def form_valid(self, form):
-        form.instance.creator = self.request.user.user
-        form.instance.page = AddOnPage(long_description=form.cleaned_data['long_description'])
-        return super(AddOnCreate, self).form_valid(form)
+    def post(self, request):
+        add_on_form = AddOnForm(request.POST, request.FILES)
+        page_form = AddOnPageForm(request.POST)
+
+        if add_on_form.is_valid() and page_form.is_valid():
+            add_on_form.instance.creator = request.user.user
+            add_on_form.instance.page = page_form.instance
+            add_on = add_on_form.save()
+            page_form.instance.add_on = add_on
+            page_form.save()
+
+            return redirect(add_on.get_absolute_url())
+
+        return render(request, self.template_name, context={
+            'add_on_form': add_on_form,
+            'page_form': page_form,
+        })
+
+    def get(self, request):
+        add_on_form = AddOnForm()
+        page_form = AddOnPageForm()
+
+        return render(request, self.template_name, context={
+            'add_on_form': add_on_form,
+            'page_form': page_form,
+        })
+
 
 
 def current_wow_version():

@@ -1,12 +1,15 @@
 from django.forms import ModelForm
-from django import forms
 
-from core.models import AddOn
+from core.models import AddOn, AddOnPage
 
 
 class AddOnForm(ModelForm):
-    long_description = forms.CharField(widget=forms.Textarea())
-
     class Meta:
         model = AddOn
         fields = ['name', 'logo', 'short_description']
+
+
+class AddOnPageForm(ModelForm):
+    class Meta:
+        model = AddOnPage
+        fields = ['long_description']

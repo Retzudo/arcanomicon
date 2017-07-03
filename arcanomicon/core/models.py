@@ -60,7 +60,7 @@ class AddOn(models.Model):
 
 class AddOnPage(models.Model):
     """Model for a add-on page."""
-    add_on = models.OneToOneField(AddOn, on_delete=models.CASCADE, related_name='page')
+    add_on = models.OneToOneField(AddOn, on_delete=models.CASCADE, related_name='page', primary_key=True)
     long_description = models.TextField()
 
     def __str__(self):
