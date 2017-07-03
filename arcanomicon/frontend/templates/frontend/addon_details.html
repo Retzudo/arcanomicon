@@ -21,43 +21,41 @@
             </div>
 
             <h2 class="title is-2">Versions</h2>
-            {% if add_on.versions.all|length > 0 %}
-                <table class="table">
-                    <thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Supports <span class="icon is-small"><i class="fa fa-wow"></i></span> </th>
+                        <th>Date</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for version in add_on.versions.all %}
                         <tr>
-                            <th>Version</th>
-                            <th>Supports <span class="icon is-small"><i class="fa fa-wow"></i></span> </th>
-                            <th>Date</th>
-                            <th>Download</th>
+                            <td>
+                                {{ version.version }}{% if forloop.first %} <em>(latest)</em>{% endif %}
+                            </td>
+                            <td>
+                                {{ version.supports }}
+                            </td>
+                            <td>
+                                {{ version.added }}
+                            </td>
+                            <td>
+                                <a href="{{ version.file.url }}" target="_blank"><i class="fa fa-download"></i></a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for version in add_on.versions.all %}
-                            <tr>
-                                <td>
-                                    {{ version.version }}{% if forloop.first %} <em>(latest)</em>{% endif %}
-                                </td>
-                                <td>
-                                    {{ version.supports }}
-                                </td>
-                                <td>
-                                    {{ version.added }}
-                                </td>
-                                <td>
-                                    <a href="{{ version.file.url }}" target="_blank"><i class="fa fa-download"></i></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <em>
-                    No version released.
-                </em>
-            {% endif %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No version released.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% if add_on.creator.pk == request.user.user.pk %}
                 <p>
-                    <a href="#" class="button">Create version</a>
+                    <a href="{% url 'addon_new_version' slug=add_on.name|slugify pk=add_on.pk %}" class="button">Create version</a>
                 </p>
             {% endif %}
         </div>
