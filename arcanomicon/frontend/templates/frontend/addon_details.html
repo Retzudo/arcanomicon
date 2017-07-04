@@ -28,6 +28,7 @@
                         <th>Supports <span class="icon is-small"><i class="fa fa-wow"></i></span> </th>
                         <th>Date</th>
                         <th>Download</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,9 @@
                             <td>
                                 <a href="{{ version.file.url }}" target="_blank"><i class="fa fa-download"></i></a>
                             </td>
+                            <td>
+                                <a href="#" class="delete-version" data-addonid="{{ add_on.pk }}" data-versionid="{{ version.pk }}" title="Delete"><i class="fa fa-trash"></i></a>
+                            </td>
                         </tr>
                     {% empty %}
                         <tr>
@@ -60,4 +64,31 @@
             {% endif %}
         </div>
     </section>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            'use strict';
+
+            var $deleteButton = $('.delete-version');
+            var deleteUrl = '/api/addons/{addOnId}/versions/{versionId}';
+
+            $deleteButton.click(function (event) {
+                event.preventDefault();
+                var $this = $(this);
+                var addOnId = $this.data('addonid');
+                var versionId = $this.data('versionid');
+
+                if (confirm('Do you really want to delete this version of the add-on?')) {
+                    $.ajax({
+                        method: 'DELETE',
+                        url: deleteUrl.replace(/\{addOnId\}/, addOnId).replace(/\{versionId\}/, versionId)
+                    }).done(function () {
+                        $this.parents('tr').remove();
+                    })
+                }
+            });
+        });
+    </script>
 {% endblock %}

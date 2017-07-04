@@ -38,3 +38,18 @@ class FavouritesView(ListAPIView, CreateModelMixin, DestroyModelMixin, GenericAP
         request.user.user.favourites.remove(add_on)
 
         return Response('', status=204)
+
+
+class DeleteAddOnVersion(DestroyModelMixin, GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def delete(self, request, add_on_id, version_id):
+        add_on = get_object_or_404(AddOn, pk=add_on_id)
+        version = add_on.versions.get(pk=version_id)
+
+        if add_on.creator.pk != request.user.user.pk:
+            raise PermissionError()
+
+        version.delete()
+
+        return Response('', status=204)
