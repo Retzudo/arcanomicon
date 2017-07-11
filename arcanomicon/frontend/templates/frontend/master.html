@@ -14,7 +14,13 @@
 <body>
     <nav class="nav has-shadow">
         <div class="nav-left">
-            <a href="{% url 'index' %}" class="nav-item">Arcanomicon</a>
+            <a href="{% url 'index' %}" class="nav-item">
+                <img src="{% static 'frontend/images/logo.svg' %}" alt="Arcanomicon">
+            </a>
+            <a href="{% url 'index' %}" class="nav-item">
+                Arcanomicon
+            </a>
+
         </div>
         <div class="nav-center">
             <form action="{% url 'search' %}" method="get" class="nav-item">
