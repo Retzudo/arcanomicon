@@ -3,13 +3,40 @@
 
 {% block body %}
     <section class="section">
-        <div class="container">
+        <div class="container add-on">
             <h1 class="title is-1">{{ add_on.name }}</h1>
             <div class="columns">
                 <div class="column is-2">
                     <figure class="image">
                         <img src="{{ add_on.logo.url }}" alt="{{ add_on.name }}">
                     </figure>
+
+                    <aside class="menu">
+                        <p class="menu-label">
+                            Actions
+                        </p>
+                        <ul class="menu-list">
+                            <li>
+                                {% if add_on in user.user.favourites.all %}
+                                    <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                       class="remove-from-favourites">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-star"></i>
+                                        </span>
+                                        Favourite
+                                    </a>
+                                {% else %}
+                                    <a href="#" title="Add to library" data-id="{{ add_on.id }}"
+                                       class="add-to-favourites">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-star-o"></i>
+                                        </span>
+                                        Favourite
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </aside>
                 </div>
                 <div class="column is-1"></div>
                 <div class="column content">
@@ -91,4 +118,5 @@
             });
         });
     </script>
+    {% include 'frontend/snippets/manage_favourite.html' %}
 {% endblock %}

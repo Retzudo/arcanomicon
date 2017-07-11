@@ -1,0 +1,41 @@
+<script>
+    $(function () {
+        'use strict';
+
+        var addUrl = '/api/favourites/';
+        var removeUrl = '/api/favourites/{addOnId}';
+
+        var $addOn = $('.add-on');
+
+        $addOn.on('click', '.add-to-favourites', function (event) {
+            event.preventDefault();
+            var $this = $(this);
+            var addOnId = $this.data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: addUrl,
+                data: {
+                    addOnId: addOnId
+                }
+            }).done(function () {
+                $this.find('i').removeClass('fa-star-o').addClass('fa-star');
+                $this.removeClass('add-to-favourites').addClass('remove-from-favourites');
+            });
+        });
+
+        $addOn.on('click', '.remove-from-favourites', function (event) {
+            event.preventDefault();
+            var $this = $(this);
+            var addOnId = $this.data('id');
+
+            $.ajax({
+                type: 'DELETE',
+                url: removeUrl.replace(/\{addOnId\}/, addOnId)
+            }).done(function () {
+                $this.find('i').removeClass('fa-star').addClass('fa-star-o');
+                $this.removeClass('remove-from-favourites').addClass('add-to-favourites');
+            });
+        });
+    });
+</script>
