@@ -7,6 +7,7 @@ from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from rest_framework.response import Response
 
 from api import serializers
+from core import models
 from core.models import AddOn
 
 
@@ -25,7 +26,14 @@ class AddOnViewSet(viewsets.ModelViewSet):
             return AddOn.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user.user)
+        add_on_page = models.AddOnPage(
+            long_description=serializer.validated_data.get('long_description')
+        )
+
+        serializer.save(
+            creator=self.request.user.user,
+            page=add_on_page
+        )
 
 
 class FavouritesView(ListAPIView, CreateModelMixin, DestroyModelMixin, GenericAPIView):
