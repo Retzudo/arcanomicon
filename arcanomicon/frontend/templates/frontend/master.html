@@ -25,7 +25,7 @@
         <div class="nav-center">
             <form action="{% url 'search' %}" method="get" class="nav-item">
                 <p class="control has-icons-right">
-                    <input type="search" class="input" placeholder="Search" name="q">
+                    <input type="search" class="input" placeholder="Search" name="q" value="{{ request.GET.q }}">
                     <span class="icon is-small is-right">
                         <i class="fa fa-search"></i>
                     </span>
